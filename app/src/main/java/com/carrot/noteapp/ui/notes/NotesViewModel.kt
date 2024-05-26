@@ -23,6 +23,14 @@ class NotesViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
         noteRepo.createNote(localNote)
     }
 
+    fun deleteNote(noteId: String) = viewModelScope.launch {
+        noteRepo.deleteNote(noteId)
+    }
+
+    fun undoDelete(note: LocalNote) = viewModelScope.launch {
+        noteRepo.createNote(note)
+    }
+
     fun updateNote(noteTitle: String?, description: String?) = viewModelScope.launch(Dispatchers.IO) {
         if (noteTitle == oldNote?.title && description == oldNote?.description && oldNote?.connected == true)
             return@launch

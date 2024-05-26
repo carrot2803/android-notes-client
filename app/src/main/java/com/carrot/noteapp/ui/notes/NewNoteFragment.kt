@@ -16,6 +16,7 @@ class NewNoteFragment : Fragment(R.layout.fragment_new_note) {
     private var _binding: FragmentNewNoteBinding? = null
     val binding: FragmentNewNoteBinding? get() = _binding
 
+    //rename to noteViewModel not Notes
     val notesViewModel: NotesViewModel by activityViewModels()
     val args: NewNoteFragmentArgs by navArgs()
 
@@ -63,8 +64,10 @@ class NewNoteFragment : Fragment(R.layout.fragment_new_note) {
         val noteTitle = binding?.newNoteTitleEditText?.text?.toString()?.trim()
         val description = binding?.newNoteDescriptionEditText?.text?.toString()?.trim()
 
-        if (noteTitle.isNullOrEmpty() && description.isNullOrEmpty())
-            return // comeback
+        if (noteTitle.isNullOrEmpty() && description.isNullOrEmpty()) {
+            notesViewModel.deleteNote(notesViewModel.oldNote!!.noteID)
+            return
+        }
 
         notesViewModel.updateNote(noteTitle, description)
     }

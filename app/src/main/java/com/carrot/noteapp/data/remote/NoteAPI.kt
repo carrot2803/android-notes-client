@@ -31,8 +31,8 @@ interface NoteAPI {
     @Headers("Content-Type: application/json")
     @PUT("/notes")
     suspend fun updateNote(
-        @Header("Authorization") token:String,
-        @Body note:RemoteNote
+        @Header("Authorization") token: String,
+        @Body note: RemoteNote
     ): SimpleResponse
 
 
@@ -40,6 +40,6 @@ interface NoteAPI {
     @DELETE("/notes/{id}")
     suspend fun deleteNote(
         @Header("Authorization") token: String,
-//        @Path("id") noteId: String
+        @Path("id") noteId: String
     ): SimpleResponse
 }
