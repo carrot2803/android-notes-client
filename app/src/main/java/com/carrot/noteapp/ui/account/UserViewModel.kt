@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.carrot.noteapp.utils.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.regex.Pattern
 
+@HiltViewModel
 class UserViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
     private val _registerState = MutableSharedFlow<Result<String>>()
     val registerState: SharedFlow<Result<String>> = _registerState

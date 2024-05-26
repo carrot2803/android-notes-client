@@ -5,7 +5,7 @@ object Constants {
     const val NAME_KEY = "NAME_KEY"
     const val EMAIL_KEY = "EMAIL_KEY"
 
-    const val BASE_URL = "http://127.0.0.1:8080"
+    const val BASE_URL = "http://192.168.1.162:8080"
 
     const val MINIMUM_PASSWORD_LENGTH = 4
     const val MAXIMUM_PASSWORD_LENGTH = 8
