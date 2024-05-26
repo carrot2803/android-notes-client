@@ -16,4 +16,6 @@ interface NoteRepo {
     fun getAllNotes(): Flow<List<LocalNote>>
     suspend fun getAllNotesFromServer()
     suspend fun deleteNote(noteID: String)
+
+    suspend fun syncNotes()
 }

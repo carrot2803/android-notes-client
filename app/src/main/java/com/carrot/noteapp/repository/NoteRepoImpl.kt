@@ -51,6 +51,31 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
         }
     }
 
+    override suspend fun syncNotes() {
+        try {
+            sessionManager.getJwtToken() ?: return
+            if (!isNetworkConnected(sessionManager.context))
+                return
+
+            val locallyDeletedNotes = noteDao.getAllLocallyDeletedNotes()
+            locallyDeletedNotes.forEach {
+                deleteNote(it.noteID)
+            }
+
+            val notConnectedNotes = noteDao.getAllLocalNotes()
+            notConnectedNotes.forEach {
+                createNote(it)
+            }
+
+            val notUpdatedNotes = noteDao.getAllLocalNotes()
+            notUpdatedNotes.forEach {
+                updateNote(it)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     override suspend fun createNote(note: LocalNote): Result<String> {
         return try {
             noteDao.insertNote(note)
@@ -86,7 +111,7 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             if (!isNetworkConnected(sessionManager.context))
                 Result.Error<String>("No Internet Connection!")
 
-            val result = noteAPI.createNote(
+            val result = noteAPI.updateNote(
                 "Bearer $token", RemoteNote(
                     note.title, note.description, note.date, note.noteID
                 )

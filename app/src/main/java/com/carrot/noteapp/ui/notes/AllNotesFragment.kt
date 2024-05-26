@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.carrot.noteapp.R
+import com.carrot.noteapp.data.local.models.LocalNote
 import com.carrot.noteapp.databinding.FragmentAllNotesBinding
 import com.carrot.noteapp.ui.adapter.NoteAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,6 +42,8 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
         }
         setupRecyclerView()
         subscribeToNotes()
+        setUpSwipeLayout()
+        noteViewModel.syncNotes()
     }
 
     private fun setupRecyclerView() {
@@ -57,7 +62,21 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
 
     private fun subscribeToNotes() = lifecycleScope.launch {
         noteViewModel.notes.collect {
-            noteAdapter.notes = it
+            noteAdapter.notes = it.filter { localNote: LocalNote ->
+                localNote.title?.contains(noteViewModel.searchQuery, true) == true || localNote.description?.contains(
+                    noteViewModel.searchQuery,
+                    true
+                ) == true
+
+            }
+        }
+    }
+
+    private fun setUpSwipeLayout() {
+        binding?.swipeRefreshLayout?.setOnRefreshListener {
+            noteViewModel.syncNotes {
+                binding?.swipeRefreshLayout?.isRefreshing = false
+            }
         }
     }
 
@@ -102,7 +121,49 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+
+        val item = menu.findItem(R.id.search)
+        val searchView = item.actionView as SearchView
+
+
+        item.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                noteViewModel.searchQuery = ""
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                noteViewModel.searchQuery = ""
+                return true
+            }
+        })
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    searchNotes(it)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    searchNotes(it)
+                }
+                return true
+            }
+        })
+
     }
+
+    private fun searchNotes(query: String) = lifecycleScope.launch {
+        noteViewModel.searchQuery = query
+        noteAdapter.notes = noteViewModel.notes.first().filter {
+            it.title?.contains(query, true) == true ||
+                    it.description?.contains(query, true) == true
+        }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
