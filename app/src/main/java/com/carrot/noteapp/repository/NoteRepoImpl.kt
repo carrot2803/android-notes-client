@@ -1,7 +1,9 @@
 package com.carrot.noteapp.repository
 
 import com.carrot.noteapp.data.local.dao.NoteDao
+import com.carrot.noteapp.data.local.models.LocalNote
 import com.carrot.noteapp.data.remote.NoteAPI
+import com.carrot.noteapp.data.remote.models.RemoteNote
 import com.carrot.noteapp.data.remote.models.User
 import com.carrot.noteapp.utils.Result
 import com.carrot.noteapp.utils.SessionManager
@@ -10,6 +12,50 @@ import javax.inject.Inject
 
 class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDao, val sessionManager: SessionManager) :
     NoteRepo {
+
+    override suspend fun createNote(note: LocalNote): Result<String> {
+        return try {
+            noteDao.insertNote(note)
+            val token = sessionManager.getJwtToken()
+            if (token == null)
+                Result.Success("Note is Saved in Local Database")
+            val result = noteAPI.createNote(
+                "Bearer $token", RemoteNote(
+                    note.title, note.description, note.date, note.noteID
+                )
+            )
+
+            if (!result.success)
+                Result.Error<String>(result.message)
+            noteDao.insertNote(note.also { it.connected = true })
+            Result.Success("Note Saved Successfully")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e.message ?: "Unexpected Error")
+        }
+    }
+
+    override suspend fun updateNote(note: LocalNote): Result<String> {
+        return try {
+            noteDao.insertNote(note)
+            val token = sessionManager.getJwtToken()
+            if (token == null)
+                Result.Success("Note is Saved in Local Database")
+            val result = noteAPI.createNote(
+                "Bearer $token", RemoteNote(
+                    note.title, note.description, note.date, note.noteID
+                )
+            )
+            if (!result.success)
+                Result.Error<String>(result.message)
+            noteDao.insertNote(note.also { it.connected = true })
+            Result.Success("Note Updated Successfully")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e.message ?: "Unexpected Error")
+        }
+    }
+
     override suspend fun createUser(user: User): Result<String> {
         return try {
             if (!isNetworkConnected(sessionManager.context))
@@ -21,7 +67,7 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             Result.Success<String>(result.message)
         } catch (e: Exception) {
             e.printStackTrace()
-            Result.Error<String>(e.message ?: "Unexpected Error")
+            Result.Error(e.message ?: "Unexpected Error")
         }
 
     }
@@ -37,7 +83,7 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             Result.Success("Logged In Successfully")
         } catch (e: Exception) {
             e.printStackTrace()
-            Result.Error<String>(e.message ?: "Unexpected Error")
+            Result.Error(e.message ?: "Unexpected Error")
         }
     }
 

@@ -44,7 +44,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNoteAPI(): NoteAPI{
+    fun provideNoteAPI(): NoteAPI {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)
 
