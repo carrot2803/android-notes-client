@@ -14,7 +14,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
+    val notes = noteRepo.getAllNotes()
     var oldNote: LocalNote? = null
+
 
     fun createNote(noteTitle: String?, description: String?) = viewModelScope.launch(Dispatchers.IO) {
         val localNote = LocalNote(noteTitle, description)
