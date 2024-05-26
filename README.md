@@ -1,3 +1,3 @@
-# Ktor-NoteApp-app
+# Kotlin android client
 
-## An android app to save your notes with backup.
+Read me + Explanation + Diagrams coming soon 🫶
