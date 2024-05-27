@@ -1,4 +1,4 @@
-package com.carrot.noteapp.data.remote.models
+package com.carrot.noteapp.datasource.remote.models
 
 data class User(
     val email: String,

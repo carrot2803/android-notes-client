@@ -1,8 +1,8 @@
-package com.carrot.noteapp.ui.account
+package com.carrot.noteapp.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.carrot.noteapp.data.remote.models.User
+import com.carrot.noteapp.datasource.remote.models.User
 import com.carrot.noteapp.repository.NoteRepo
 import com.carrot.noteapp.utils.Constants.MAXIMUM_PASSWORD_LENGTH
 import com.carrot.noteapp.utils.Constants.MINIMUM_PASSWORD_LENGTH

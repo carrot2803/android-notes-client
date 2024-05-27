@@ -1,4 +1,4 @@
-package com.carrot.noteapp.ui.account
+package com.carrot.noteapp.views.account
 
 import android.os.Bundle
 import android.view.View
@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.carrot.noteapp.R
 import com.carrot.noteapp.databinding.FragmentUserInfoBinding
 import com.carrot.noteapp.utils.Result
+import com.carrot.noteapp.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

@@ -1,18 +1,21 @@
 package com.carrot.noteapp.repository
 
-import com.carrot.noteapp.data.local.dao.NoteDao
-import com.carrot.noteapp.data.local.models.LocalNote
-import com.carrot.noteapp.data.remote.NoteAPI
-import com.carrot.noteapp.data.remote.models.RemoteNote
-import com.carrot.noteapp.data.remote.models.User
+import com.carrot.noteapp.datasource.local.dao.NoteDao
+import com.carrot.noteapp.datasource.local.models.LocalNote
+import com.carrot.noteapp.datasource.remote.NoteAPI
+import com.carrot.noteapp.datasource.remote.models.RemoteNote
+import com.carrot.noteapp.datasource.remote.models.User
 import com.carrot.noteapp.utils.Result
 import com.carrot.noteapp.utils.SessionManager
 import com.carrot.noteapp.utils.isNetworkConnected
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDao, val sessionManager: SessionManager) :
-    NoteRepo {
+class NoteRepoImpl @Inject constructor(
+    val noteAPI: NoteAPI,
+    val noteDao: NoteDao,
+    val sessionManager: SessionManager
+) : NoteRepo {
 
     override fun getAllNotes(): Flow<List<LocalNote>> = noteDao.getAllNotesOrderedByDate()
 
@@ -24,11 +27,64 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             val result = noteAPI.getAllNotes("Bearer $token")
             result.forEach { remoteNote ->
                 noteDao.insertNote(
-                    LocalNote(remoteNote.title, remoteNote.description, remoteNote.date, true, noteID = remoteNote.id)
+                    LocalNote(
+                        remoteNote.title,
+                        remoteNote.description,
+                        remoteNote.date,
+                        true,
+                        noteID = remoteNote.id
+                    )
                 )
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override suspend fun createNote(note: LocalNote): Result<String> {
+        return try {
+            noteDao.insertNote(note)
+            val token = sessionManager.getJwtToken()
+            if (token == null)
+                Result.Success("Note is Saved in Local Database")
+
+            if (!isNetworkConnected(sessionManager.context))
+                Result.Error<String>("No Internet Connection!")
+
+            val result = noteAPI.createNote(
+                "Bearer $token", RemoteNote(note.title, note.description, note.date, note.noteID)
+            )
+
+            if (!result.success)
+                Result.Error<String>(result.message)
+            noteDao.insertNote(note.also { it.connected = true })
+            Result.Success("Note Saved Successfully")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e.message ?: "Unexpected Error")
+        }
+    }
+
+    override suspend fun updateNote(note: LocalNote): Result<String> {
+        return try {
+            noteDao.insertNote(note)
+            val token = sessionManager.getJwtToken()
+            if (token == null)
+                Result.Success("Note is Saved in Local Database")
+            if (!isNetworkConnected(sessionManager.context))
+                Result.Error<String>("No Internet Connection!")
+
+            val result = noteAPI.updateNote(
+                "Bearer $token", RemoteNote(note.title, note.description, note.date, note.noteID)
+            )
+
+            if (!result.success)
+                Result.Error<String>(result.message)
+            noteDao.insertNote(note.also { it.connected = true })
+            Result.Success("Note Updated Successfully")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e.message ?: "Unexpected Error")
         }
     }
 
@@ -58,74 +114,18 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
                 return
 
             val locallyDeletedNotes = noteDao.getAllLocallyDeletedNotes()
-            locallyDeletedNotes.forEach {
-                deleteNote(it.noteID)
-            }
+            locallyDeletedNotes.forEach { deleteNote(it.noteID) }
 
             val notConnectedNotes = noteDao.getAllLocalNotes()
-            notConnectedNotes.forEach {
-                createNote(it)
-            }
+            notConnectedNotes.forEach { createNote(it) }
 
             val notUpdatedNotes = noteDao.getAllLocalNotes()
-            notUpdatedNotes.forEach {
-                updateNote(it)
-            }
+            notUpdatedNotes.forEach { updateNote(it) }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
-    override suspend fun createNote(note: LocalNote): Result<String> {
-        return try {
-            noteDao.insertNote(note)
-            val token = sessionManager.getJwtToken()
-            if (token == null)
-                Result.Success("Note is Saved in Local Database")
-
-            if (!isNetworkConnected(sessionManager.context))
-                Result.Error<String>("No Internet Connection!")
-
-            val result = noteAPI.createNote(
-                "Bearer $token", RemoteNote(
-                    note.title, note.description, note.date, note.noteID
-                )
-            )
-
-            if (!result.success)
-                Result.Error<String>(result.message)
-            noteDao.insertNote(note.also { it.connected = true })
-            Result.Success("Note Saved Successfully")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Result.Error(e.message ?: "Unexpected Error")
-        }
-    }
-
-    override suspend fun updateNote(note: LocalNote): Result<String> {
-        return try {
-            noteDao.insertNote(note)
-            val token = sessionManager.getJwtToken()
-            if (token == null)
-                Result.Success("Note is Saved in Local Database")
-            if (!isNetworkConnected(sessionManager.context))
-                Result.Error<String>("No Internet Connection!")
-
-            val result = noteAPI.updateNote(
-                "Bearer $token", RemoteNote(
-                    note.title, note.description, note.date, note.noteID
-                )
-            )
-            if (!result.success)
-                Result.Error<String>(result.message)
-            noteDao.insertNote(note.also { it.connected = true })
-            Result.Success("Note Updated Successfully")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Result.Error(e.message ?: "Unexpected Error")
-        }
-    }
-
 
     override suspend fun createUser(user: User): Result<String> {
         return try {
@@ -135,12 +135,25 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             if (!result.success)
                 Result.Error<String>(result.message)
             sessionManager.updateSession(result.message, user.email, user.name ?: "")
-            Result.Success<String>(result.message)
+            Result.Success(result.message)
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Unexpected Error")
         }
 
+    }
+
+    override suspend fun getUser(): Result<User> {
+        return try {
+            val email = sessionManager.getCurrentUserEmail()
+            val username = sessionManager.getCurrentUserName()
+            if (email == null || username == null)
+                Result.Error<User>("User not Logged In")
+            Result.Success(User(email!!, "", username))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(e.message ?: "Unexpected Error")
+        }
     }
 
     override suspend fun login(user: User): Result<String> {
@@ -153,19 +166,6 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             sessionManager.updateSession(result.message, user.email, user.name ?: "")
             getAllNotesFromServer()
             Result.Success("Logged In Successfully")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Result.Error(e.message ?: "Unexpected Error")
-        }
-    }
-
-    override suspend fun getUser(): Result<User> {
-        return try {
-            val email = sessionManager.getCurrentUserEmail()
-            val username = sessionManager.getCurrentUserName()
-            if (email == null || username == null)
-                Result.Error<User>("User not Logged In")
-            Result.Success(User(email!!, "", username))
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Unexpected Error")

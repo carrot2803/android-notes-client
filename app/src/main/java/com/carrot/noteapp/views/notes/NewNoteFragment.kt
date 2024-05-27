@@ -1,4 +1,4 @@
-package com.carrot.noteapp.ui.notes
+package com.carrot.noteapp.views.notes
 
 import android.os.Bundle
 import android.view.View
@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.carrot.noteapp.R
 import com.carrot.noteapp.databinding.FragmentNewNoteBinding
+import com.carrot.noteapp.viewmodels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

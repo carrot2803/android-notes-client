@@ -1,7 +1,7 @@
 package com.carrot.noteapp.repository
 
-import com.carrot.noteapp.data.local.models.LocalNote
-import com.carrot.noteapp.data.remote.models.User
+import com.carrot.noteapp.datasource.local.models.LocalNote
+import com.carrot.noteapp.datasource.remote.models.User
 import com.carrot.noteapp.utils.Result
 import kotlinx.coroutines.flow.Flow
 

@@ -2,9 +2,9 @@ package com.carrot.noteapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.carrot.noteapp.data.local.NoteDatabase
-import com.carrot.noteapp.data.local.dao.NoteDao
-import com.carrot.noteapp.data.remote.NoteAPI
+import com.carrot.noteapp.datasource.local.NoteDatabase
+import com.carrot.noteapp.datasource.local.dao.NoteDao
+import com.carrot.noteapp.datasource.remote.NoteAPI
 import com.carrot.noteapp.repository.NoteRepo
 import com.carrot.noteapp.repository.NoteRepoImpl
 import com.carrot.noteapp.utils.Constants.BASE_URL
@@ -20,7 +20,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)

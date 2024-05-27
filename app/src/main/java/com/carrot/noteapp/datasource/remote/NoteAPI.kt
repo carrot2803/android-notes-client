@@ -1,8 +1,8 @@
-package com.carrot.noteapp.data.remote
+package com.carrot.noteapp.datasource.remote
 
-import com.carrot.noteapp.data.remote.models.RemoteNote
-import com.carrot.noteapp.data.remote.models.SimpleResponse
-import com.carrot.noteapp.data.remote.models.User
+import com.carrot.noteapp.datasource.remote.models.RemoteNote
+import com.carrot.noteapp.datasource.remote.models.SimpleResponse
+import com.carrot.noteapp.datasource.remote.models.User
 import retrofit2.http.*
 
 interface NoteAPI {
@@ -21,7 +21,6 @@ interface NoteAPI {
         @Body note: RemoteNote
     ): SimpleResponse
 
-
     @Headers("Content-Type: application/json")
     @GET("/notes")
     suspend fun getAllNotes(
@@ -34,7 +33,6 @@ interface NoteAPI {
         @Header("Authorization") token: String,
         @Body note: RemoteNote
     ): SimpleResponse
-
 
     @Headers("Content-Type: application/json")
     @DELETE("/notes/{id}")

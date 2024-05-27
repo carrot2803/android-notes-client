@@ -4,15 +4,15 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
 		android:id="@+id/account"
-		android:title="Backup"
+		android:title="@string/backup"
 		android:icon="@drawable/ic_baseline_account_circle_24"
 		app:showAsAction="never"/>
 
 	<item
 		android:id="@+id/search"
-		android:title="Search"
+		android:title="@string/search"
 		android:icon="@drawable/ic_baseline_search_24"
 		app:actionViewClass="android.widget.SearchView"
-		app:showAsAction="always"/>
+		app:showAsAction="ifRoom"/>
 
 </menu>

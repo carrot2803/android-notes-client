@@ -1,10 +1,10 @@
-package com.carrot.noteapp.data.local.dao
+package com.carrot.noteapp.datasource.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.carrot.noteapp.data.local.models.LocalNote
+import com.carrot.noteapp.datasource.local.models.LocalNote
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,5 +26,4 @@ interface NoteDao {
 
     @Query("SELECT * FROM LocalNote WHERE locallyDeleted = 1")
     suspend fun getAllLocallyDeletedNotes(): List<LocalNote>
-
 }

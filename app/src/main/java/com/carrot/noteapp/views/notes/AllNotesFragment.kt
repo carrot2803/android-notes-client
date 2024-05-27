@@ -1,4 +1,4 @@
-package com.carrot.noteapp.ui.notes
+package com.carrot.noteapp.views.notes
 
 import android.graphics.Canvas
 import android.os.Bundle
@@ -14,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.carrot.noteapp.R
-import com.carrot.noteapp.data.local.models.LocalNote
+import com.carrot.noteapp.datasource.local.models.LocalNote
 import com.carrot.noteapp.databinding.FragmentAllNotesBinding
-import com.carrot.noteapp.ui.adapter.NoteAdapter
+import com.carrot.noteapp.adapter.NoteAdapter
+import com.carrot.noteapp.viewmodels.NotesViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

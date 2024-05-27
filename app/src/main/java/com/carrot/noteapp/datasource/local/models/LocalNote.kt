@@ -1,4 +1,4 @@
-package com.carrot.noteapp.data.local.models
+package com.carrot.noteapp.datasource.local.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

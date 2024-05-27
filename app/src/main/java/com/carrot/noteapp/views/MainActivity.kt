@@ -1,4 +1,4 @@
-package com.carrot.noteapp.ui
+package com.carrot.noteapp.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

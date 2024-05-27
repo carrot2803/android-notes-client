@@ -1,4 +1,4 @@
-package com.carrot.noteapp.ui.adapter
+package com.carrot.noteapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.carrot.noteapp.R
-import com.carrot.noteapp.data.local.models.LocalNote
+import com.carrot.noteapp.datasource.local.models.LocalNote
 import com.carrot.noteapp.databinding.ItemNoteBinding
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
@@ -33,7 +33,6 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-
         val note = notes[position]
         holder.binding.apply {
             noteText.isVisible = note.title != null
@@ -42,6 +41,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
             note.title?.let {
                 noteText.text = it
             }
+
             note.description?.let {
                 noteDescription.text = it
             }
@@ -59,7 +59,6 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
         }
     }
-
 
     private var onItemClickListener: ((LocalNote) -> Unit)? = null
     fun setOnItemClickListener(listener: (LocalNote) -> Unit) {
