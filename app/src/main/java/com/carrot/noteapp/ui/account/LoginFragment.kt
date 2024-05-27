@@ -30,11 +30,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         subscribeToLoginEvents()
 
         binding?.loginBtn?.setOnClickListener {
-            val name = binding!!.nameEditTxt.text.toString()
             val email = binding!!.emailEditTxt.text.toString()
             val password = binding!!.passwordEditTxt.text.toString()
 
-            userViewModel.loginUser(name, email, password)
+            userViewModel.loginUser(email, password)
         }
     }
 

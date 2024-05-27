@@ -165,7 +165,7 @@ class NoteRepoImpl @Inject constructor(val noteAPI: NoteAPI, val noteDao: NoteDa
             val username = sessionManager.getCurrentUserName()
             if (email == null || username == null)
                 Result.Error<User>("User not Logged In")
-            Result.Success(User(username, email!!, ""))
+            Result.Success(User(email!!, "", username))
         } catch (e: Exception) {
             e.printStackTrace()
             Result.Error(e.message ?: "Unexpected Error")

@@ -46,10 +46,10 @@ class UserViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
         _loginState.emit(noteRepo.login(newUser))
     }
 
-    fun loginUser(name: String, email: String, password: String) = viewModelScope.launch {
+    fun loginUser(email: String, password: String) = viewModelScope.launch {
         _loginState.emit(Result.Loading())
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()) {
             _loginState.emit(Result.Error("Some Fields are empty"))
             return@launch
         }
@@ -64,7 +64,7 @@ class UserViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
             return@launch
         }
 
-        val newUser = User(name, email, password)
+        val newUser = User(email, password)
         _loginState.emit(noteRepo.login(newUser))
     }
 
