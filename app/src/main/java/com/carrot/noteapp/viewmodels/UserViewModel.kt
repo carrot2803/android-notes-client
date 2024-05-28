@@ -44,6 +44,7 @@ class UserViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
 
         val newUser = User(email, password, name)
         _registerState.emit(noteRepo.register(newUser))
+        _registerState.emit(noteRepo.login(newUser)) // login user after registration
     }
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {

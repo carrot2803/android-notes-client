@@ -28,8 +28,8 @@ import kotlinx.coroutines.launch
 class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
     private var _binding: FragmentAllNotesBinding? = null
     private val binding: FragmentAllNotesBinding? get() = _binding
-    private lateinit var noteAdapter: NoteAdapter
-    private val notesViewModel: NotesViewModel by activityViewModels()
+    lateinit var noteAdapter: NoteAdapter
+    val notesViewModel: NotesViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -27,7 +27,7 @@
 	</fragment>
 	<fragment
 		android:id="@+id/userInfoFragment"
-		android:name="com.carrot.noteapp.views.account.UserInfoFragment"
+		android:name="com.carrot.noteapp.views.auth.UserInfoFragment"
 		android:label="UserInfoFragment">
 		<action
 			android:id="@+id/action_userInfoFragment_to_createAccountFragment"
@@ -38,10 +38,10 @@
 	</fragment>
 	<fragment
 		android:id="@+id/createAccountFragment"
-		android:name="com.carrot.noteapp.views.account.RegisterFragment"
+		android:name="com.carrot.noteapp.views.auth.RegisterFragment"
 		android:label="CreateAccountFragment"/>
 	<fragment
 		android:id="@+id/loginFragment"
-		android:name="com.carrot.noteapp.views.account.LoginFragment"
+		android:name="com.carrot.noteapp.views.auth.LoginFragment"
 		android:label="LoginFragment"/>
 </navigation>

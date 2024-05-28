@@ -1,4 +1,4 @@
-package com.carrot.noteapp.views.account
+package com.carrot.noteapp.views.auth
 
 import android.os.Bundle
 import android.view.View
