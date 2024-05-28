@@ -27,10 +27,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
     private var _binding: FragmentAllNotesBinding? = null
-    val binding: FragmentAllNotesBinding? get() = _binding
-
+    private val binding: FragmentAllNotesBinding? get() = _binding
     private lateinit var noteAdapter: NoteAdapter
-    private val noteViewModel: NotesViewModel by activityViewModels()
+    private val notesViewModel: NotesViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +42,7 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
         setupRecyclerView()
         subscribeToNotes()
         setUpSwipeLayout()
-        noteViewModel.syncNotes()
+        notesViewModel.syncNotes()
     }
 
     private fun setupRecyclerView() {
@@ -61,10 +60,10 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
     }
 
     private fun subscribeToNotes() = lifecycleScope.launch {
-        noteViewModel.notes.collect {
+        notesViewModel.notes.collect {
             noteAdapter.notes = it.filter { localNote: LocalNote ->
-                localNote.title?.contains(noteViewModel.searchQuery, true) == true || localNote.description?.contains(
-                    noteViewModel.searchQuery,
+                localNote.title?.contains(notesViewModel.searchQuery, true) == true || localNote.description?.contains(
+                    notesViewModel.searchQuery,
                     true
                 ) == true
 
@@ -74,13 +73,13 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
 
     private fun setUpSwipeLayout() {
         binding?.swipeRefreshLayout?.setOnRefreshListener {
-            noteViewModel.syncNotes {
+            notesViewModel.syncNotes {
                 binding?.swipeRefreshLayout?.isRefreshing = false
             }
         }
     }
 
-    val itemTouchHelperCallback =
+    private val itemTouchHelperCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: ViewHolder, target: ViewHolder): Boolean {
                 return true
@@ -89,10 +88,10 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
             override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
                 val position = viewHolder.layoutPosition
                 val note = noteAdapter.notes[position]
-                noteViewModel.deleteNote(note.noteID)
-                Snackbar.make(requireView(), "Note Deleted Successfully!", Snackbar.LENGTH_LONG).apply {
+                notesViewModel.deleteNote(note.noteID)
+                Snackbar.make(requireView(), "Note Deleted", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
-                        noteViewModel.undoDelete(note)
+                        notesViewModel.undoDelete(note)
                     }
                     show()
                 }
@@ -126,12 +125,12 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
 
         item.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                noteViewModel.searchQuery = ""
+                notesViewModel.searchQuery = ""
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                noteViewModel.searchQuery = ""
+                notesViewModel.searchQuery = ""
                 return true
             }
         })
@@ -151,12 +150,11 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
                 return true
             }
         })
-
     }
 
     private fun searchNotes(query: String) = lifecycleScope.launch {
-        noteViewModel.searchQuery = query
-        noteAdapter.notes = noteViewModel.notes.first().filter {
+        notesViewModel.searchQuery = query
+        noteAdapter.notes = notesViewModel.notes.first().filter {
             it.title?.contains(query, true) == true ||
                     it.description?.contains(query, true) == true
         }

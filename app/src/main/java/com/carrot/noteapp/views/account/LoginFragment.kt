@@ -20,8 +20,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
-    val binding: FragmentLoginBinding? get() = _binding
-
+    private val binding: FragmentLoginBinding? get() = _binding
     private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

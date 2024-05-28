@@ -38,7 +38,7 @@
 	</fragment>
 	<fragment
 		android:id="@+id/createAccountFragment"
-		android:name="com.carrot.noteapp.views.account.CreateAccountFragment"
+		android:name="com.carrot.noteapp.views.account.RegisterFragment"
 		android:label="CreateAccountFragment"/>
 	<fragment
 		android:id="@+id/loginFragment"

@@ -9,5 +9,4 @@ object Constants {
 
     const val MINIMUM_PASSWORD_LENGTH = 4
     const val MAXIMUM_PASSWORD_LENGTH = 8
-
 }

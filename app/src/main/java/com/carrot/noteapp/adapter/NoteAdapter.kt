@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.carrot.noteapp.R
+import com.carrot.noteapp.databinding.FragmentNoteItemBinding
 import com.carrot.noteapp.datasource.local.models.LocalNote
-import com.carrot.noteapp.databinding.ItemNoteBinding
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
-    class NoteViewHolder(val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root)
+    class NoteViewHolder(val binding: FragmentNoteItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val diffUtil = object : DiffUtil.ItemCallback<LocalNote>() {
         override fun areItemsTheSame(oldItem: LocalNote, newItem: LocalNote): Boolean {
@@ -29,7 +29,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
         set(value) = differ.submitList(value)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        return NoteViewHolder(ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return NoteViewHolder(FragmentNoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {

@@ -15,11 +15,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NewNoteFragment : Fragment(R.layout.fragment_new_note) {
     private var _binding: FragmentNewNoteBinding? = null
-    val binding: FragmentNewNoteBinding? get() = _binding
-
-    //rename to noteViewModel not Notes
-    val notesViewModel: NotesViewModel by activityViewModels()
-    val args: NewNoteFragmentArgs by navArgs()
+    private val binding: FragmentNewNoteBinding? get() = _binding
+    private val notesViewModel: NotesViewModel by activityViewModels()
+    private val args: NewNoteFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

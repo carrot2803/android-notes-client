@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.carrot.noteapp.R
-import com.carrot.noteapp.databinding.FragmentCreateAccountBinding
+import com.carrot.noteapp.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,15 +17,14 @@ import com.carrot.noteapp.utils.Result
 import com.carrot.noteapp.viewmodels.UserViewModel
 
 @AndroidEntryPoint
-class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
-    private var _binding: FragmentCreateAccountBinding? = null
-    val binding: FragmentCreateAccountBinding? get() = _binding
-
+class RegisterFragment : Fragment(R.layout.fragment_register) {
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding: FragmentRegisterBinding? get() = _binding
     private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentCreateAccountBinding.bind(view)
+        _binding = FragmentRegisterBinding.bind(view)
 
         subscribeToRegisterEvents()
         binding?.registerButton?.setOnClickListener {
@@ -40,7 +39,6 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
     private fun subscribeToRegisterEvents() = lifecycleScope.launch {
         userViewModel.registerState.collect { result ->
-
             when (result) {
                 is Result.Success -> {
                     hideProgressBar()
@@ -53,9 +51,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
                     Toast.makeText(requireContext(), result.errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
-                is Result.Loading -> {
-                    showProgressBar()
-                }
+                is Result.Loading -> showProgressBar()
             }
         }
 

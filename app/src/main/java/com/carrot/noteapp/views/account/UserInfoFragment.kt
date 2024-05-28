@@ -17,12 +17,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
-
     private var _binding: FragmentUserInfoBinding? = null
-    val binding: FragmentUserInfoBinding? get() = _binding
-
+    private val binding: FragmentUserInfoBinding? get() = _binding
     private val userViewModel: UserViewModel by activityViewModels()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,9 +53,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
                     "Not logged in".also { binding?.userTxt?.text = it }
                 }
 
-                is Result.Loading -> {
-                    binding?.userProgressBar?.isVisible = true
-                }
+                is Result.Loading -> binding?.userProgressBar?.isVisible = true
             }
         }
     }
@@ -78,7 +73,6 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         binding?.logoutButton?.isVisible = false
         binding?.userEmail?.isVisible = false
     }
-
 
     override fun onStart() {
         super.onStart()
