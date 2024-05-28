@@ -6,7 +6,7 @@ import com.carrot.noteapp.utils.Result
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepo {
-    suspend fun createUser(user: User): Result<String>
+    suspend fun register(user: User): Result<String>
     suspend fun login(user: User): Result<String>
     suspend fun getUser(): Result<User>
     suspend fun logout(): Result<String>

@@ -72,7 +72,7 @@ class NoteRepoImpl @Inject constructor(
             if (token == null)
                 Result.Success("Note is Saved in Local Database")
             if (!isNetworkConnected(sessionManager.context))
-                Result.Error<String>("No Internet Connection!")
+                Result.Error<String>("No Internet Connection")
 
             val result = noteAPI.updateNote(
                 "Bearer $token", RemoteNote(note.title, note.description, note.date, note.noteID)
@@ -127,14 +127,14 @@ class NoteRepoImpl @Inject constructor(
         }
     }
 
-    override suspend fun createUser(user: User): Result<String> {
+    override suspend fun register(user: User): Result<String> {
         return try {
             if (!isNetworkConnected(sessionManager.context))
                 Result.Error<String>("No Internet Connection")
-            val result = noteAPI.createAccount(user)
+            val result = noteAPI.register(user)
             if (!result.success)
                 Result.Error<String>(result.message)
-            sessionManager.updateSession(result.message, user.email, user.name ?: "")
+            sessionManager.updateSession(result.message, user.email, user.username ?: "")
             Result.Success(result.message)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -163,7 +163,7 @@ class NoteRepoImpl @Inject constructor(
             val result = noteAPI.login(user)
             if (!result.success)
                 Result.Error<String>(result.message)
-            sessionManager.updateSession(result.message, user.email, user.name ?: "")
+            sessionManager.updateSession(result.message, user.email, user.username ?: "")
             getAllNotesFromServer()
             Result.Success("Logged In Successfully")
         } catch (e: Exception) {
@@ -181,5 +181,4 @@ class NoteRepoImpl @Inject constructor(
             Result.Error(e.message ?: "Unexpected error")
         }
     }
-
 }

@@ -30,7 +30,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         subscribeToLoginEvents()
 
-        binding?.loginBtn?.setOnClickListener {
+        binding?.loginButton?.setOnClickListener {
             val email = binding!!.emailEditTxt.text.toString()
             val password = binding!!.passwordEditTxt.text.toString()
 
@@ -43,7 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             when (result) {
                 is Result.Success -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(), "Account Successfully Created!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Logged In Successfully", Toast.LENGTH_SHORT).show()
                     findNavController().popBackStack()
                 }
 
@@ -52,12 +52,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     Toast.makeText(requireContext(), result.errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
-                is Result.Loading -> {
-                    showProgressBar()
-                }
-
+                is Result.Loading -> showProgressBar()
             }
-
         }
     }
 

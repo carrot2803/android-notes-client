@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface NoteAPI {
     @Headers("Content-Type: application/json")
     @POST("/register")
-    suspend fun createAccount(@Body user: User): SimpleResponse
+    suspend fun register(@Body user: User): SimpleResponse
 
     @Headers("Content-Type: application/json")
     @POST("/login")

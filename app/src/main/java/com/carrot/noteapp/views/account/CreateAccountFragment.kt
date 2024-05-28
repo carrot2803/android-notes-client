@@ -28,13 +28,13 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
         _binding = FragmentCreateAccountBinding.bind(view)
 
         subscribeToRegisterEvents()
-        binding?.createAccountBtn?.setOnClickListener {
+        binding?.registerButton?.setOnClickListener {
             val username = binding!!.userNameEditTxt.text.toString()
             val email = binding!!.emailEditTxt.text.toString()
             val password = binding!!.passwordEditTxt.text.toString()
             val confirmPassword = binding!!.passwordReEnterEditTxt.text.toString()
 
-            userViewModel.createUser(username.trim(), email.trim(), password.trim(), confirmPassword.trim())
+            userViewModel.registerUser(username.trim(), email.trim(), password.trim(), confirmPassword.trim())
         }
     }
 
@@ -62,11 +62,11 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
     }
 
     private fun showProgressBar() {
-        binding?.createUserProgressBar?.isVisible = true
+        binding?.ProgressBar?.isVisible = true
     }
 
     private fun hideProgressBar() {
-        binding?.createUserProgressBar?.isVisible = false
+        binding?.ProgressBar?.isVisible = false
     }
 
     override fun onDestroy() {

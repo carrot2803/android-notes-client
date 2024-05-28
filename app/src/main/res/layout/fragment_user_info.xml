@@ -50,7 +50,7 @@
 			app:layout_constraintHorizontal_bias="0.496">
 
 			<com.google.android.material.button.MaterialButton
-				android:id="@+id/logoutBtn"
+				android:id="@+id/logoutButton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="8dp"
@@ -60,16 +60,16 @@
 				app:cornerRadius="30dp"/>
 
 			<com.google.android.material.button.MaterialButton
-				android:id="@+id/createAccountBtn"
+				android:id="@+id/registerButton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="8dp"
 				android:backgroundTint="?attr/colorSecondary"
-				android:text="@string/create_new_account"
+				android:text="@string/register"
 				app:cornerRadius="30dp"/>
 
 			<com.google.android.material.button.MaterialButton
-				android:id="@+id/loginBtn"
+				android:id="@+id/loginButton"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginBottom="8dp"

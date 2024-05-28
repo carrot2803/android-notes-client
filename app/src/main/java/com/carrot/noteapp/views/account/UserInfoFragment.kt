@@ -28,15 +28,15 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentUserInfoBinding.bind(view)
 
-        binding?.createAccountBtn?.setOnClickListener {
+        binding?.registerButton?.setOnClickListener {
             findNavController().navigate(R.id.action_userInfoFragment_to_createAccountFragment)
         }
 
-        binding?.loginBtn?.setOnClickListener {
+        binding?.loginButton?.setOnClickListener {
             findNavController().navigate(R.id.action_userInfoFragment_to_loginFragment)
         }
 
-        binding?.logoutBtn?.setOnClickListener {
+        binding?.logoutButton?.setOnClickListener {
             userViewModel.logout()
         }
         subscribeToCurrentUserEvents()
@@ -47,14 +47,13 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             when (result) {
                 is Result.Success -> {
                     userLoggedIn()
-                    binding?.userTxt?.text = result.data?.name ?: "No Name"
+                    binding?.userTxt?.text = result.data?.username ?: "No Name"
                     binding?.userEmail?.text = result.data?.email ?: "No Email"
                 }
 
                 is Result.Error -> {
                     userNotLoggedIn()
-//                    "Not logged in".also { binding?.userTxt?.text = it }
-                    binding?.userTxt?.text = "Not logged in"
+                    "Not logged in".also { binding?.userTxt?.text = it }
                 }
 
                 is Result.Loading -> {
@@ -66,17 +65,17 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
     private fun userLoggedIn() {
         binding?.userProgressBar?.isVisible = false
-        binding?.loginBtn?.isVisible = false
-        binding?.createAccountBtn?.isVisible = false
-        binding?.logoutBtn?.isVisible = true
+        binding?.loginButton?.isVisible = false
+        binding?.registerButton?.isVisible = false
+        binding?.logoutButton?.isVisible = true
         binding?.userEmail?.isVisible = true
     }
 
     private fun userNotLoggedIn() {
         binding?.userProgressBar?.isVisible = false
-        binding?.loginBtn?.isVisible = true
-        binding?.createAccountBtn?.isVisible = true
-        binding?.logoutBtn?.isVisible = false
+        binding?.loginButton?.isVisible = true
+        binding?.registerButton?.isVisible = true
+        binding?.logoutButton?.isVisible = false
         binding?.userEmail?.isVisible = false
     }
 

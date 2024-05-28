@@ -32,7 +32,6 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
     private lateinit var noteAdapter: NoteAdapter
     private val noteViewModel: NotesViewModel by activityViewModels()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAllNotesBinding.bind(view)
@@ -118,14 +117,12 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
         val item = menu.findItem(R.id.search)
         val searchView = item.actionView as SearchView
-
 
         item.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
@@ -165,7 +162,6 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
         }
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.account -> {
@@ -174,7 +170,6 @@ class AllNotesFragment : Fragment(R.layout.fragment_all_notes) {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

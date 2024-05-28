@@ -25,7 +25,7 @@ class UserViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
     private val _currentUserState = MutableSharedFlow<Result<User>>()
     val currentUserState: SharedFlow<Result<User>> = _currentUserState
 
-    fun createUser(name: String, email: String, password: String, confirmPassword: String) = viewModelScope.launch {
+    fun registerUser(name: String, email: String, password: String, confirmPassword: String) = viewModelScope.launch {
         _registerState.emit(Result.Loading())
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || password != confirmPassword) {
             _registerState.emit(Result.Error("Some fields are empty/incorrect"))
@@ -33,7 +33,7 @@ class UserViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
 
         if (!isEmailValid(email)) {
-            _registerState.emit(Result.Error("Email is not Valid!"))
+            _registerState.emit(Result.Error("Email is not Valid"))
             return@launch
         }
 
@@ -42,8 +42,8 @@ class UserViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
             return@launch
         }
 
-        val newUser = User(name, email, password)
-        _loginState.emit(noteRepo.login(newUser))
+        val newUser = User(email, password, name)
+        _registerState.emit(noteRepo.register(newUser))
     }
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
@@ -55,7 +55,7 @@ class UserViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewMo
         }
 
         if (!isEmailValid(email)) {
-            _loginState.emit(Result.Error("Email is not Valid!"))
+            _loginState.emit(Result.Error("Email is not Valid"))
             return@launch
         }
 
