@@ -12,7 +12,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class NotesViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
+class NotesViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewModel() {
     val notes = noteRepo.getAllNotes()
     var oldNote: LocalNote? = null
     var searchQuery: String = ""

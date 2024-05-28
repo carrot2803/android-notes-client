@@ -15,7 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.regex.Pattern
 
 @HiltViewModel
-class UserViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
+class UserViewModel @Inject constructor(private val noteRepo: NoteRepo) : ViewModel() {
     private val _registerState = MutableSharedFlow<Result<String>>()
     val registerState: SharedFlow<Result<String>> = _registerState
 

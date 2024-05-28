@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NoteRepoImpl @Inject constructor(
-    val noteAPI: NoteAPI,
-    val noteDao: NoteDao,
-    val sessionManager: SessionManager
+    private val noteAPI: NoteAPI,
+    private val noteDao: NoteDao,
+    private val sessionManager: SessionManager
 ) : NoteRepo {
 
     override fun getAllNotes(): Flow<List<LocalNote>> = noteDao.getAllNotesOrderedByDate()
