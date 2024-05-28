@@ -13,7 +13,7 @@ import com.carrot.noteapp.databinding.ItemNoteBinding
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     class NoteViewHolder(val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root)
 
-    val diffUtil = object : DiffUtil.ItemCallback<LocalNote>() {
+    private val diffUtil = object : DiffUtil.ItemCallback<LocalNote>() {
         override fun areItemsTheSame(oldItem: LocalNote, newItem: LocalNote): Boolean {
             return oldItem.noteID == newItem.noteID
         }
@@ -23,7 +23,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
         }
     }
 
-    val differ = AsyncListDiffer(this, diffUtil)
+    private val differ = AsyncListDiffer(this, diffUtil)
     var notes: List<LocalNote>
         get() = differ.currentList
         set(value) = differ.submitList(value)

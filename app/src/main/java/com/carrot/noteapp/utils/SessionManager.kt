@@ -31,7 +31,7 @@ class SessionManager(val context: Context) {
         return preferences[jwtTokenKey]
     }
 
-    suspend fun getCurrentUserName():String? {
+    suspend fun getCurrentUserName(): String? {
         val nameKey = stringPreferencesKey(NAME_KEY)
         val preferences = context.dataStore.data.first()
         return preferences[nameKey]

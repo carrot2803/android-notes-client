@@ -29,8 +29,8 @@ class NotesViewModel @Inject constructor(val noteRepo: NoteRepo) : ViewModel() {
         noteRepo.updateNote(note)
     }
 
-    fun deleteNote(noteId: String) = viewModelScope.launch {
-        noteRepo.deleteNote(noteId)
+    fun deleteNote(noteID: String) = viewModelScope.launch {
+        noteRepo.deleteNote(noteID)
     }
 
     fun undoDelete(note: LocalNote) = viewModelScope.launch {
