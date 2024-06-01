@@ -58,8 +58,12 @@ This app uses [
 
 ## Snippets
 
-<img alt="ScreenShot1" src="https://i.imgur.com/GXFkylF.jpeg" width="150"/>
-<img alt="ScreenShot2" src="https://i.imgur.com/1uDpJ6z.jpeg" width="150"/> <br/>
-<img alt="ScreenShot3" src="https://i.imgur.com/iPt2lil.jpeg" width="150"/> 
-<img alt="ScreenShot4" src="https://i.imgur.com/mgQKNUe.jpeg" width="150"/> 
+<div style="display: flex;">
+    <img alt="ScreenShot1" src="https://i.imgur.com/GXFkylF.jpeg" width="150"/>
+    <img alt="ScreenShot2" src="https://i.imgur.com/1uDpJ6z.jpeg" width="150"/>
+</div>
+<div style="display: flex;">
+    <img alt="ScreenShot3" src="https://i.imgur.com/iPt2lil.jpeg" width="150"/>
+    <img alt="ScreenShot4" src="https://i.imgur.com/mgQKNUe.jpeg" width="150"/>
+</div>
 
